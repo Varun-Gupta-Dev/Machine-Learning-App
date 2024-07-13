@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-07-11T18:06:15.878394100Z">
+        <DropdownSelection timestamp="2024-07-13T12:57:55.104467600Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\hp\.android\avd\Copy_of_Varun_Phone_2.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=4ce56a02" />
             </handle>
           </Target>
         </DropdownSelection>

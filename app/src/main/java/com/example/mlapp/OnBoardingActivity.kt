@@ -26,7 +26,7 @@ class OnBoardingActivity : TutorialActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        Thread.sleep(3000)
+        Thread.sleep(2000)
         installSplashScreen()
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
