@@ -23,6 +23,7 @@ import com.hololo.tutorial.library.TutorialActivity
 
 class OnBoardingActivity : TutorialActivity() {
     private val READ_EXTERNAL_STORAGE_REQUEST_CODE = 101
+    private val CAMERA_REQUEST_CODE = 102
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,7 +34,7 @@ class OnBoardingActivity : TutorialActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-        if (isReadExternalStoragePermissionGranted()) {
+        if (isReadExternalStoragePermissionGranted() && isCameraPermissionsGranted()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -89,13 +90,21 @@ class OnBoardingActivity : TutorialActivity() {
                 .setSummary(getString(com.example.mlapp.R.string.continue_and_learn))
                 .setPermissions(
                     arrayOf<String>(
-                       Manifest.permission.READ_EXTERNAL_STORAGE
+                       Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA
                     )
                 )
                 .build()
         )
 
 
+    }
+
+    private fun isCameraPermissionsGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun currentFragmentPosition(position: Int) {

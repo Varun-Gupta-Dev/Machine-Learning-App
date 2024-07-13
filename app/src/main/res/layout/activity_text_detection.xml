@@ -15,6 +15,7 @@
 <!--        app:layout_constraintStart_toStartOf="parent">-->
 
     <EditText
+        android:id="@+id/et_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav_bar"
@@ -39,6 +40,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/ll_erase"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -61,6 +63,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_camera"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -74,7 +77,8 @@
                 android:id="@+id/iv_camera"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:background="@drawable/circle_black"
+                android:padding="4dp"
+                android:background="@drawable/camera_background_circle"
                 app:srcCompat="@drawable/ic_menu_camera"
                 android:paddingTop="5dp"/>
             <TextView
@@ -84,6 +88,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_copy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
