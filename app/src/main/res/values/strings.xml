@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MLApp</string>
+    <string name="permission_title">Grant Access</string>
+    <string name="permission_detail">Give the app access to read and write external storage</string>
+    <string name="continue_and_learn">Please continue and use the app to access its features</string>
+    <string name="text_detecttion_description">Detect text from images and videos</string>
+    <string name="sentiment_analysis_description">Detect face and analyse the mood of a person</string>
+</resources>
