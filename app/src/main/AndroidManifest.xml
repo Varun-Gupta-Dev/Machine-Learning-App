@@ -20,8 +20,15 @@
         android:theme="@style/Theme.MLApp"
         tools:targetApi="31">
         <activity
+            android:name=".FaceDetectionActivity"
+            android:parentActivityName=".MainActivity"
+            android:exported="false"
+            android:label="Face Detection"/>
+        <activity
             android:name=".TextDetectionActivity"
-            android:exported="false" />
+            android:parentActivityName=".MainActivity"
+            android:exported="false"
+            android:label="Text Detection" />
         <activity
             android:name=".OnBoardingActivity"
             android:exported="true"
@@ -45,7 +52,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

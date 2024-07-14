@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_blue">#0b1035</color>
     <color name="lavendar">#9A9AEB</color>
+    <color name="dark_lavendar">#7373E3</color>
+
 </resources>

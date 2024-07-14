@@ -66,4 +66,5 @@ dependencies {
 
     // To recognize Korean script
     implementation ("com.google.mlkit:text-recognition-korean:16.0.0")
+    implementation (libs.face.detection)
 }

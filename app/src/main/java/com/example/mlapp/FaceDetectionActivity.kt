@@ -1,37 +1,31 @@
 package com.example.mlapp
 
-import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.EditText
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.mlapp.databinding.ActivityTextDetectionBinding
+import com.example.mlapp.databinding.ActivityFaceDetectionBinding
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
-import com.google.mlkit.vision.text.devanagari.DevanagariTextRecognizerOptions
-import com.google.mlkit.vision.text.japanese.JapaneseTextRecognizerOptions
-import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.google.mlkit.vision.face.FaceContour
+import com.google.mlkit.vision.face.FaceDetection
+import com.google.mlkit.vision.face.FaceDetectorOptions
 
-class TextDetectionActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTextDetectionBinding
-    @SuppressLint("ServiceCast")
+class FaceDetectionActivity : AppCompatActivity() {
+    private  lateinit var binding: ActivityFaceDetectionBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityTextDetectionBinding.inflate(layoutInflater)
+
+        binding = ActivityFaceDetectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         actionBar?.setDisplayHomeAsUpEnabled(true)
@@ -42,15 +36,16 @@ class TextDetectionActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-//        to set the color of status bar
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = ContextCompat.getColor(this, R.color.dark_lavendar)
         }
 
-        binding.llCamera.setOnClickListener {
+        var btnClickImage = findViewById<Button>(R.id.btn_click_image)
+        var tvFaceDetectResult = findViewById<TextView>(R.id.tv_face_detect_result)
+        btnClickImage.setOnClickListener {
             // open up the camera and store the image
             // Upon clicking an image, we will run the ML algo to detect text out of it
-
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if(intent.resolveActivity(packageManager) != null){
                 // i want to recieve the image and send it for result extraction
@@ -60,55 +55,58 @@ class TextDetectionActivity : AppCompatActivity() {
                 Toast.makeText(this, "OOPS, something went wrong", Toast.LENGTH_SHORT).show()
             }
         }
-
-        binding.llErase.setOnClickListener{
-            binding.tvResult.setText("")
-        }
-
-        binding.llCopy.setOnClickListener{
-            val clipBoard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("text", binding.tvResult.text)
-            clipBoard.setPrimaryClip(clip)
-            Toast.makeText(this, "Copied to ClipBoard", Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if(requestCode == 183 && resultCode == RESULT_OK){
             val extras = data?.extras
             val bitmap = extras?.get("data") as Bitmap
-            detectTextUsingML(bitmap)
+            detectFace(bitmap)
         }
     }
 
-    private fun detectTextUsingML(bitmap: Bitmap) {
-        val recognizerLatin = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-        // When using Chinese script library
-        val recognizerChinese = TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
+    private fun detectFace(bitmap: Bitmap) {
+        // High-accuracy landmark detection and face classification
+        val options = FaceDetectorOptions.Builder()
+            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+            .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
+            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+            .enableTracking()
+            .build()
+        // Real-time contour detection
+        val realTimeOpts = FaceDetectorOptions.Builder()
+            .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
+            .build()
 
-// When using Devanagari script library
-        val recognizerDevanagari = TextRecognition.getClient(DevanagariTextRecognizerOptions.Builder().build())
-
-// When using Japanese script library
-        val recognizerJapanese = TextRecognition.getClient(JapaneseTextRecognizerOptions.Builder().build())
-
-// When using Korean script library
-        val recognizerKorean = TextRecognition.getClient(KoreanTextRecognizerOptions.Builder().build())
-
+        val detector = FaceDetection.getClient(options)
+        val detectorRealTime = FaceDetection.getClient(realTimeOpts)
         val image = InputImage.fromBitmap(bitmap, 0)
+        var resultText = ""
 
-        // Code for processing image by ML
-        recognizerLatin.process(image)
-            .addOnSuccessListener { visionText ->
+        val result = detector.process(image)
+            .addOnSuccessListener { faces ->
                 // Task completed successfully
-                binding.tvResult.setText(visionText.text)
+
+                var i = 1
+                for (face in faces) {
+                    resultText += "Face number: $i\n"+
+                            "Smile : ${face.smilingProbability?.times(100)}%\n"+
+                            "Left Eye open : ${face.leftEyeOpenProbability?.times(100)}%\n"+
+                            "Right Eye open : ${face.rightEyeOpenProbability?.times(100)}%\n"
+                            "Face tracking Id : ${face.trackingId}\n\n"
+
+                    i++
+                }
+                if(faces.isEmpty()){
+                    resultText = "No face detected"
+                }else{
+                    binding.tvFaceDetectResult.text = resultText
+                }
             }
             .addOnFailureListener { e ->
                 // Task failed with an exception
                 Toast.makeText(this, "OOPS, something went wrong", Toast.LENGTH_SHORT).show()
             }
-
     }
 }

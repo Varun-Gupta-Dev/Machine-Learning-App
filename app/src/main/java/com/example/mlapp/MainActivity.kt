@@ -20,10 +20,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Set status bar color (ensure this is called after setContentView)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            window.statusBarColor = ContextCompat.getColor(this, R.color.dark_blue)
-//        }
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setHomeAsUpIndicator(R.drawable.ic_black_color_back)
+
+//        Set status bar color (ensure this is called after setContentView)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.dark_lavendar)
+        }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -32,9 +35,9 @@ class MainActivity : AppCompatActivity() {
         binding.cardTextDetection.setOnClickListener {
             startActivity(Intent(this, TextDetectionActivity::class.java))
         }
-//        binding.cardSentimentAnalysis.setOnClickListener {
-//            startActivity(Intent(this, SentimentAnalysisActivity::class.java))
-//        }
+        binding.cardSentimentAnalysis.setOnClickListener {
+            startActivity(Intent(this, FaceDetectionActivity::class.java))
+        }
 
     }
 }
