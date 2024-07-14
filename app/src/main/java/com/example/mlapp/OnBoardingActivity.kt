@@ -34,7 +34,7 @@ class OnBoardingActivity : TutorialActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-        if (isReadExternalStoragePermissionGranted() && isCameraPermissionsGranted()) {
+        if ( isCameraPermissionsGranted()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -89,8 +89,7 @@ class OnBoardingActivity : TutorialActivity() {
                 .setDrawable(com.example.mlapp.R.drawable.permission)
                 .setSummary(getString(com.example.mlapp.R.string.continue_and_learn))
                 .setPermissions(
-                    arrayOf<String>(
-                       Manifest.permission.READ_EXTERNAL_STORAGE,
+                    arrayOf(
                         Manifest.permission.CAMERA
                     )
                 )
@@ -117,12 +116,12 @@ class OnBoardingActivity : TutorialActivity() {
     }
 
     override fun finishTutorial() {
-        if (isReadExternalStoragePermissionGranted() && isCameraPermissionsGranted()) {
+        if ( isCameraPermissionsGranted()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }else{
             Toast.makeText(this, "Please grant permission", Toast.LENGTH_SHORT).show();
-            requestReadExternalStoragePermission()
+            requestCameraPermission()
         }
     }
 
@@ -151,10 +150,10 @@ class OnBoardingActivity : TutorialActivity() {
     }
 
     // Function to request permission
-    private fun requestReadExternalStoragePermission() {
+    private fun requestCameraPermission() {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.CAMERA),
             READ_EXTERNAL_STORAGE_REQUEST_CODE
         )
     }

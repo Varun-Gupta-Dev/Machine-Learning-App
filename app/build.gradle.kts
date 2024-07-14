@@ -49,7 +49,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation ("com.github.msayan:tutorial-view:v1.0.10")
+    implementation (libs.tutorial.view)
     implementation("com.google.android.material:material:1.7.0")
 
     // To recognize Latin script
