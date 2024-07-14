@@ -108,11 +108,16 @@ class OnBoardingActivity : TutorialActivity() {
     }
 
     override fun currentFragmentPosition(position: Int) {
-        Toast.makeText(this, "Position : " + position, Toast.LENGTH_SHORT).show();
+        if(position != 5){
+            Toast.makeText(this, "Please click next", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(this, "PLease select the ${"Give"} button to grant permissions" , Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     override fun finishTutorial() {
-        if (isReadExternalStoragePermissionGranted()) {
+        if (isReadExternalStoragePermissionGranted() && isCameraPermissionsGranted()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }else{
