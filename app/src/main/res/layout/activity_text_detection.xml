@@ -16,16 +16,18 @@
 
     <TextView
         android:id="@+id/tv_result"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="150dp"
+        android:textColor="@color/black"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        tools:text = "Extracted text will be shown here"
-        android:gravity="center"/>
+        android:text = "Extracted text will be shown here" />
 
     <LinearLayout
         android:id="@+id/bottom_nav_bar"
